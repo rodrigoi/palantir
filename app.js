@@ -106,10 +106,11 @@ app.get("/logout", function(req, res){
 });
 
 app.get("/video", ensureAuthenticated, function(req, res) {
-  // var user = process.env.SAURON_USER || "";
-  // var pwd = process.env.SAURON_PWD || "";
+  var user = process.env.SAURON_USER || "";
+  var pwd = process.env.SAURON_PWD || "";
+  var address = process.env.SAURON_ADDR || "";
   // request.get("http://192.168.0.111:8080/videostream.cgi?user=" + user + "&pwd=" + pwd).pipe(res);
-  res.redirect("http://192.168.0.111:8080/videostream.cgi?user=&pwd=");
+  res.redirect(address + "/videostream.cgi?user=" + user + "&pwd=" + pwd);
 });
 
 var port = process.env.PORT || 3000;
