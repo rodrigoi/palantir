@@ -1,0 +1,11 @@
+[
+  {
+    "name": "Sauron",
+    "address": "http://home.gandalfelgris.com.ar:8080",
+    "presets": {
+      "couch": 1,
+      "kitchen": 2,
+      "table": 3
+    }
+  }
+]
