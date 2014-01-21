@@ -105,7 +105,9 @@ app.get("/logout", function(req, res){
 });
 
 app.get("/video", ensureAuthenticated, function(req, res) {
-  request.get("http://home.gandalfelgris.com.ar:8080/videostream.cgi?user=&pwd=").pipe(res);
+  var user = process.env.SAURON_USER || "";
+  var pwd = process.env.SAURON_PWD || "";
+  request.get("http://home.gandalfelgris.com.ar:8080/videostream.cgi?user=" + user + "&pwd=" + pwd).pipe(res);
 });
 
 var port = process.env.PORT || 3000;
