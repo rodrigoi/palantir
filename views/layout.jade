@@ -1,0 +1,64 @@
+doctype html
+html
+  head
+    title Palantir
+    meta(name='viewport', content='width=device-width')
+
+    link(href='https://fonts.googleapis.com/css?family=Limelight|Flamenco|Federo|Yesteryear|Josefin Sans|Spinnaker|Sansita One|Handlee|Droid Sans|Oswald:400,300,700', media='screen', rel='stylesheet', type='text/css')
+    link(href='stylesheets/bootstrap.css', media='screen', rel='stylesheet', type='text/css')
+    link(href='stylesheets/bootstrap-responsive.css', media='screen', rel='stylesheet', type='text/css')
+    link(href='stylesheets/common.css', media='screen', rel='stylesheet', type='text/css')
+    link(href='stylesheets/fontawesome.css', media='screen', rel='stylesheet', type='text/css')
+    link(href='stylesheets/project.css', media='screen', rel='stylesheet', type='text/css')
+    link(href='stylesheets/test.css', media='screen', rel='stylesheet', type='text/css')
+
+
+
+    style.
+      body {
+        padding-top: 40px;
+        padding-bottom: 40px;
+        background-color: #eee;
+      }
+      .form-signin {
+        max-width: 330px;
+        padding: 15px;
+        margin: 0 auto;
+      }
+      .form-signin .form-signin-heading, .form-signin .checkbox {
+        margin-bottom: 10px;
+      }
+      .form-signin .checkbox {
+        font-weight: normal;
+      }
+      .form-signin .form-control {
+        position: relative;
+        font-size: 16px;
+        height: auto;
+        padding: 10px;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+      }
+      .form-signin .form-control:focus {
+        z-index: 2;
+      }
+      .form-signin input[type="text"] {
+        margin-bottom: -1px;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+      .form-signin input[type="password"] {
+        margin-bottom: 10px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+      }
+  body
+    .navbar.navbar-fixed-top
+      .navbar-inner
+        a.brand(href='#') Palantir
+        ul.nav.pull-right
+          li
+            a(href='#') Logout
+    .container
+      block content

@@ -1,17 +1,39 @@
-doctype html
-html(lang="en")
-  head
-    title= "Palantir"
-  body
-    h1 Jade - node template engine
-    #container.col
-      if youAreUsingJade
-        p You are amazing
-      else
-        p Get on it!
-      p.
-        Jade is a terse and simple
-        templating language with a
-        strong focus on performance
-        and powerful features.
-      img(src="/video")
+extends layout
+
+block append content
+  .row-fluid
+    span.span6
+      .well
+        img.image(src='/video')
+        .div-1
+          .btn-group
+            button.btn
+              i.icon.icon-chevron-left
+            button.btn
+              i.icon.icon-chevron-right
+            button.btn
+              i.icon.icon-chevron-up
+            button.btn
+              i.icon.icon-chevron-down
+          .btn-group.pull-right
+            button.btn.btn-primary Sofa
+            button.btn Kitchen
+            button.btn Table
+            button.btn Window
+    span.span6
+      .well
+        img.image(src='/video')
+        .div-1
+          .btn-group
+            button.btn
+              i.icon.icon-chevron-left
+            button.btn
+              i.icon.icon-chevron-right
+            button.btn
+              i.icon.icon-chevron-up
+            button.btn
+              i.icon.icon-chevron-down
+          .btn-group.pull-right
+            button.btn TV
+            button.btn.btn-primary Main
+            button.btn Hallway

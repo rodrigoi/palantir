@@ -3,6 +3,9 @@ var express = require("express");
 var passport = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
 
+var cameras = require("./cameras.json");
+console.log(cameras);
+
 var users = [
     { id: 1, username: "bob", password: "secret", email: "bob@example.com" },
     { id: 2, username: "joe", password: "birthday", email: "joe@example.com" }
@@ -59,9 +62,7 @@ var app = express();
 
 app.configure(function() {
   app.set("views", __dirname + "/views");
-  app.set("view engine", "ejs");
-
-  app.engine("ejs", require("ejs-locals"));
+  app.set("view engine", "jade");
 
   app.use(express.logger());
   app.use(express.cookieParser());
@@ -73,7 +74,7 @@ app.configure(function() {
   app.use(passport.session());
 
   app.use(app.router);
-  app.use(express.static(__dirname + "/../../public"));
+  app.use(express.static(__dirname + "/public"));
 });
 
 
@@ -105,9 +106,10 @@ app.get("/logout", function(req, res){
 });
 
 app.get("/video", ensureAuthenticated, function(req, res) {
-  var user = process.env.SAURON_USER || "";
-  var pwd = process.env.SAURON_PWD || "";
-  request.get("http://192.168.0.111:8080/videostream.cgi?user=" + user + "&pwd=" + pwd).pipe(res);
+  // var user = process.env.SAURON_USER || "";
+  // var pwd = process.env.SAURON_PWD || "";
+  // request.get("http://192.168.0.111:8080/videostream.cgi?user=" + user + "&pwd=" + pwd).pipe(res);
+  res.redirect("http://192.168.0.111:8080/videostream.cgi?user=&pwd=");
 });
 
 var port = process.env.PORT || 3000;
@@ -115,6 +117,3 @@ var port = process.env.PORT || 3000;
 app.listen(port, function() {
   console.log("Express server listening on port " + port);
 });
-
-var cameras = require("./cameras.json");
-console.log(cameras);
