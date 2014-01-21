@@ -1,11 +1,20 @@
 [
   {
     "name": "Sauron",
-    "address": "http://home.gandalfelgris.com.ar:8080",
+    "config_key": "SAURON",
     "presets": {
       "couch": 1,
       "kitchen": 2,
       "table": 3
+    }
+  },
+  {
+    "name": "Melkor",
+    "config_key" : "MELKOR",
+    "presets": {
+      "main": 1,
+      "tv": 2,
+      "hallway": 3
     }
   }
 ]
