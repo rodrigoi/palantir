@@ -5,6 +5,6 @@ block append content
     p= message
   form.form-signin(action='/login', method='post')
     h2.form-signin-heading Please sign in
-    input.form-control(name='username', type='text', placeholder='username')
-    input.form-control(name='password', type='password', placeholder='password')
+    input.form-control.input-block-level(name='username', type='text', placeholder='username')
+    input.form-control.input-block-level(name='password', type='password', placeholder='password')
     button.btn.btn-lg.btn-primary.btn-block(type='submit') Sign in
