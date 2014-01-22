@@ -2,20 +2,20 @@
   {
     "name": "Sauron",
     "config_key": "SAURON",
-    "presets": {
-      "couch": 1,
-      "kitchen": 2,
-      "table": 3,
-      "window": 4
-    }
+    "presets": [
+      { "name": "couch", "key": 1},
+      { "name": "kitchen", "key": 2},
+      { "name": "table", "key": 3},
+      { "name": "window", "key": 4}
+    ]
   },
   {
     "name": "Saruman",
     "config_key" : "SARUMAN",
-    "presets": {
-      "main": 1,
-      "tv": 2,
-      "hallway": 3
-    }
+    "presets": [
+      { "name": "window", "key": 1},
+      { "name": "center", "key": 2},
+      { "name": "hallway", "key": 3}
+    ]
   }
 ]

@@ -2,40 +2,21 @@ extends layout
 
 block append content
   .row-fluid
-    span.span6
-      .well
-        p sauron
-        img.image(src='/video/sauron')
-        .div-1
-          .btn-group
-            button.btn
-              i.icon.icon-chevron-left
-            button.btn
-              i.icon.icon-chevron-right
-            button.btn
-              i.icon.icon-chevron-up
-            button.btn
-              i.icon.icon-chevron-down
-          .btn-group.pull-right
-            button.btn.btn-primary Sofa
-            button.btn Kitchen
-            button.btn Table
-            button.btn Window
-    span.span6
-      .well
-        p saruman
-        img.image(src='/video/saruman')
-        .div-1
-          .btn-group
-            button.btn
-              i.icon.icon-chevron-left
-            button.btn
-              i.icon.icon-chevron-right
-            button.btn
-              i.icon.icon-chevron-up
-            button.btn
-              i.icon.icon-chevron-down
-          .btn-group.pull-right
-            button.btn TV
-            button.btn.btn-primary Main
-            button.btn Hallway
+    each camera in cameras
+      span.span6
+        .well
+          p= camera.name
+          img.image(src='/video/' + camera.name)
+          .div-1
+            .btn-group
+              button.btn
+                i.icon.icon-chevron-left
+              button.btn
+                i.icon.icon-chevron-right
+              button.btn
+                i.icon.icon-chevron-up
+              button.btn
+                i.icon.icon-chevron-down
+            .btn-group.pull-right
+              each preset in camera.presets
+                button.btn= preset.name

@@ -115,7 +115,10 @@ app.configure(function() {
 
 
 app.get("/", ensureAuthenticated, function(req, res){
-  res.render("index", { user: req.user });
+  res.render("index", {
+    user: req.user,
+    cameras: cameras
+  });
 });
 
 app.get("/login", function(req, res){
@@ -148,27 +151,27 @@ app.get("/video/:name", ensureAuthenticated, function(req, res) {
     return camera.name.toLowerCase() === name.toLowerCase();
   }).pop();
 
+  var cameraAddress = "http://placekitten.com/640/480";
+
   if(camera) {
     camera.address = process.env[camera.config_key + "_ADDR"];
     camera.users = {
       operator: {
-        name: process.env[camera.config_key + "_USER"],
-        pwd: process.env[camera.config_key + "_PWD"]
+        name: process.env[camera.config_key + "_OPERATOR_USER"],
+        pwd: process.env[camera.config_key + "_OPERATOR_PWD"]
       },
       visitor: {
-        name: process.env[camera.config_key + "_USER"],
-        pwd: process.env[camera.config_key + "_PWD"]
+        name: process.env[camera.config_key + "_USER"] || process.env[camera.config_key + "_OPERATOR_USER"],
+        pwd: process.env[camera.config_key + "_PWD"] || process.env[camera.config_key + "_OPERATOR_PWD"]
       }
     };
 
-    // request.get("http://192.168.0.111:8080/videostream.cgi?user=" + user + "&pwd=" + pwd).pipe(res);
-    // res.end();
-
-    res.redirect(camera.address + "/videostream.cgi?user=" + camera.users.visitor.name + "&pwd=" + camera.users.visitor.pwd);
-    return;
+    if(camera.address) {
+      cameraAddress = camera.address + "/videostream.cgi?user=" + camera.users.visitor.name + "&pwd=" + camera.users.visitor.pwd;
+    }
   }
 
-  res.redirect("http://placekitten.com/640/480");
+  res.redirect(cameraAddress);
 });
 
 var port = process.env.PORT || 3000;
