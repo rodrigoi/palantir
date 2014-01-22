@@ -5,12 +5,13 @@
     "presets": {
       "couch": 1,
       "kitchen": 2,
-      "table": 3
+      "table": 3,
+      "window": 4
     }
   },
   {
-    "name": "Melkor",
-    "config_key" : "MELKOR",
+    "name": "Saruman",
+    "config_key" : "SARUMAN",
     "presets": {
       "main": 1,
       "tv": 2,

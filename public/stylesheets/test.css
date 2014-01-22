@@ -12,6 +12,9 @@
  .container {
    margin-top: 50px;
  }
+ .container .row-fluid .span6 .well p {
+  text-align: center;
+ }
  .container .row-fluid .span6 .well .image {
    border-radius: 5px;
  }

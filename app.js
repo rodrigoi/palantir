@@ -2,33 +2,63 @@ var request = require("request");
 var express = require("express");
 var passport = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
+var mongodb = require("mongodb");
+var mongoose = require("mongoose");
+var bcrypt = require("bcrypt");
 
 var cameras = require("./cameras.json");
-console.log(cameras);
 
-var users = [
-    { id: 1, username: "bob", password: "secret", email: "bob@example.com" },
-    { id: 2, username: "joe", password: "birthday", email: "joe@example.com" }
-];
+mongoose.connect(process.env.MONGOLAB_URI || "mongodb://localhost/test");
+var db = mongoose.connection;
+db.on("error", console.error.bind(console, "connection error:"));
+db.once("open", function (){
+  console.log("Connected to the DB");
+});
 
-function findById(id, fn) {
-  var idx = id - 1;
-  if (users[idx]) {
-    fn(null, users[idx]);
-  } else {
-    fn(new Error("User " + id + " does not exist"));
-  }
-}
+var userSchema = mongoose.Schema({
+  username: { type: String, required: true, unique: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true }
+});
 
-function findByUsername(username, fn) {
-  for (var i = 0, len = users.length; i < len; i++) {
-    var user = users[i];
-    if (user.username === username) {
-      return fn(null, user);
-    }
-  }
-  return fn(null, null);
-}
+var SALT_WORK_FACTOR = 10;
+
+userSchema.pre("save", function(next) {
+  var user = this;
+
+  if(!user.isModified("password")) return next();
+
+  bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+    if(err) return next(err);
+
+    bcrypt.hash(user.password, salt, function(err, hash) {
+      if(err) return next(err);
+      user.password = hash;
+      next();
+    });
+  });
+});
+
+userSchema.methods.comparePassword = function(candidatePassword, cb) {
+  bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
+    if(err) return cb(err);
+    cb(null, isMatch);
+  });
+};
+
+var User = mongoose.model("User", userSchema);
+// var user = new User({
+//   username: "",
+//   email: "",
+//   password: ""
+// });
+// user.save(function (error) {
+//   if(error) {
+//     console.log(error);
+//   } else {
+//     console.log("user:" + user.username + " saved.");
+//   }
+// });
 
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) { return next(); }
@@ -40,23 +70,29 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser(function(id, done) {
-  findById(id, function (err, user) {
+  User.findById(id, function (err, user) {
     done(err, user);
   });
 });
 
-passport.use(new LocalStrategy(
-  function(username, password, done) {
-    process.nextTick(function () {
-      findByUsername(username, function(err, user) {
-        if (err) { return done(err); }
-        if (!user) { return done(null, false, { message: "Unknown user " + username }); }
-        if (user.password != password) { return done(null, false, { message: "Invalid password" }); }
-        return done(null, user);
-      })
+passport.use(new LocalStrategy(function(username, password, done) {
+  User.findOne({ username: username }, function(error, user) {
+    if (error) {
+      return done(error);
+    }
+    if(!user) {
+      return done(null, false, { message: "Invalid User"});
+    }
+
+    user.comparePassword(password, function(error, isMatch) {
+      if (error) {
+        return done(error);
+      }
+
+      return isMatch ? done(null, user) : done(null, false, { message: "Invalid Password"});
     });
-  }
-));
+  });
+}));
 
 var app = express();
 
