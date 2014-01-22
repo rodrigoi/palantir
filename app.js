@@ -141,12 +141,34 @@ app.get("/logout", function(req, res){
   res.redirect("/");
 });
 
-app.get("/video", ensureAuthenticated, function(req, res) {
-  var user = process.env.SAURON_USER || "";
-  var pwd = process.env.SAURON_PWD || "";
-  var address = process.env.SAURON_ADDR || "";
-  // request.get("http://192.168.0.111:8080/videostream.cgi?user=" + user + "&pwd=" + pwd).pipe(res);
-  res.redirect(address + "/videostream.cgi?user=" + user + "&pwd=" + pwd);
+app.get("/video/:name", ensureAuthenticated, function(req, res) {
+  var name = req.params.name;
+
+  var camera = cameras.filter(function(camera) {
+    return camera.name.toLowerCase() === name.toLowerCase();
+  }).pop();
+
+  if(camera) {
+    camera.address = process.env[camera.config_key + "_ADDR"];
+    camera.users = {
+      operator: {
+        name: process.env[camera.config_key + "_USER"],
+        pwd: process.env[camera.config_key + "_PWD"]
+      },
+      visitor: {
+        name: process.env[camera.config_key + "_USER"],
+        pwd: process.env[camera.config_key + "_PWD"]
+      }
+    };
+
+    // request.get("http://192.168.0.111:8080/videostream.cgi?user=" + user + "&pwd=" + pwd).pipe(res);
+    // res.end();
+
+    res.redirect(camera.address + "/videostream.cgi?user=" + camera.users.visitor.name + "&pwd=" + camera.users.visitor.pwd);
+    return;
+  }
+
+  res.redirect("http://placekitten.com/640/480");
 });
 
 var port = process.env.PORT || 3000;
