@@ -1,4 +1,5 @@
-var request = require("request");
+//var request = require("request");
+var http = require("http");
 var express = require("express");
 var passport = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
@@ -6,7 +7,21 @@ var mongodb = require("mongodb");
 var mongoose = require("mongoose");
 var bcrypt = require("bcrypt");
 
-var cameras = require("./cameras.json");
+var rawCameras = require("./cameras.json");
+var cameras = rawCameras.map(function(camera){
+  camera.address = process.env[camera.config_key + "_ADDR"];
+  camera.users = {
+    operator: {
+      name: process.env[camera.config_key + "_OPERATOR_USER"],
+      pwd: process.env[camera.config_key + "_OPERATOR_PWD"]
+    },
+    visitor: {
+      name: process.env[camera.config_key + "_USER"] || process.env[camera.config_key + "_OPERATOR_USER"],
+      pwd: process.env[camera.config_key + "_PWD"] || process.env[camera.config_key + "_OPERATOR_PWD"]
+    }
+  };
+  return camera;
+});
 
 mongoose.connect(process.env.MONGOLAB_URI || "mongodb://localhost/test");
 var db = mongoose.connection;
@@ -100,7 +115,7 @@ app.configure(function() {
   app.set("views", __dirname + "/views");
   app.set("view engine", "jade");
 
-  app.use(express.logger());
+  app.use(express.logger("dev"));
   app.use(express.cookieParser());
   app.use(express.bodyParser());
   app.use(express.methodOverride());
@@ -117,7 +132,7 @@ app.configure(function() {
 app.get("/", ensureAuthenticated, function(req, res){
   res.render("index", {
     user: req.user,
-    cameras: cameras
+    cameras: rawCameras
   });
 });
 
@@ -153,25 +168,46 @@ app.get("/video/:name", ensureAuthenticated, function(req, res) {
 
   var cameraAddress = "http://placekitten.com/640/480";
 
-  if(camera) {
-    camera.address = process.env[camera.config_key + "_ADDR"];
-    camera.users = {
-      operator: {
-        name: process.env[camera.config_key + "_OPERATOR_USER"],
-        pwd: process.env[camera.config_key + "_OPERATOR_PWD"]
-      },
-      visitor: {
-        name: process.env[camera.config_key + "_USER"] || process.env[camera.config_key + "_OPERATOR_USER"],
-        pwd: process.env[camera.config_key + "_PWD"] || process.env[camera.config_key + "_OPERATOR_PWD"]
-      }
-    };
-
-    if(camera.address) {
-      cameraAddress = camera.address + "/videostream.cgi?user=" + camera.users.visitor.name + "&pwd=" + camera.users.visitor.pwd;
-    }
+  if(camera && camera.address) {
+    cameraAddress = camera.address + "/videostream.cgi?user=" + camera.users.visitor.name + "&pwd=" + camera.users.visitor.pwd;
   }
 
   res.redirect(cameraAddress);
+});
+
+var commands = [];
+commands["up:start"]    = "0";
+commands["up:stop"]     = "1";
+commands["down:start"]  = "2";
+commands["down:stop"]   = "3";
+commands["right:start"]  = "4";
+commands["right:stop"]   = "5";
+commands["left:start"] = "6";
+commands["left:stop"]  = "7";
+
+commands["preset:1"]    ="31";
+commands["preset:2"]    ="33";
+commands["preset:3"]    ="35";
+commands["preset:4"]    ="37";
+commands["preset:5"]    ="39";
+commands["preset:6"]    ="41";
+commands["preset:7"]    ="43";
+commands["preset:8"]    ="45";
+
+app.get("/command/:camera/:command", ensureAuthenticated, function (req, res) {
+  var name = req.params.camera;
+
+  var camera = cameras.filter(function(camera) {
+    return camera.name.toLowerCase() === name.toLowerCase();
+  }).pop();
+
+  var command = commands[req.params.command];
+  if(command && camera && camera.address) {
+    cameraAddress = camera.address + "/decoder_control.cgi?command=" + command + "&user=" + camera.users.visitor.name + "&pwd=" + camera.users.visitor.pwd;
+    http.request(cameraAddress, function(response) {}).end();
+  }
+
+  res.send(200);
 });
 
 var port = process.env.PORT || 3000;

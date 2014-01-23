@@ -9,14 +9,14 @@ block append content
           img.image(src='/video/' + camera.name)
           .div-1
             .btn-group
-              button.btn
+              button.btn(data-action="move" data-camera= camera.name data-direction="left")
                 i.icon.icon-chevron-left
-              button.btn
+              button.btn(data-action="move" data-camera= camera.name data-direction="right")
                 i.icon.icon-chevron-right
-              button.btn
+              button.btn(data-action="move" data-camera= camera.name data-direction="up")
                 i.icon.icon-chevron-up
-              button.btn
+              button.btn(data-action="move" data-camera= camera.name data-direction="down")
                 i.icon.icon-chevron-down
             .btn-group.pull-right
               each preset in camera.presets
-                button.btn= preset.name
+                button.btn(data-action="preset" data-camera= camera.name data-preset= preset.key)= preset.name
