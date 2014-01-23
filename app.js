@@ -203,7 +203,7 @@ app.get("/command/:camera/:command", ensureAuthenticated, function (req, res) {
 
   var command = commands[req.params.command];
   if(command && camera && camera.address) {
-    cameraAddress = camera.address + "/decoder_control.cgi?command=" + command + "&user=" + camera.users.visitor.name + "&pwd=" + camera.users.visitor.pwd;
+    cameraAddress = camera.address + "/decoder_control.cgi?command=" + command + "&user=" + camera.users.operator.name + "&pwd=" + camera.users.operator.pwd;
     http.request(cameraAddress, function(response) {}).end();
   }
 
