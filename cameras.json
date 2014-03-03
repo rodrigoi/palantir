@@ -13,9 +13,9 @@
     "name": "Saruman",
     "config_key" : "SARUMAN",
     "presets": [
-      { "name": "window", "key": 1},
-      { "name": "center", "key": 2},
-      { "name": "hallway", "key": 3}
+      { "name": "window", "key": 2},
+      { "name": "center", "key": 3},
+      { "name": "hallway", "key": 4}
     ]
   }
 ]
