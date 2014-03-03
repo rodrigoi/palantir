@@ -1,22 +1,22 @@
 extends layout
 
 block append content
-  .row-fluid
+  .row
     each camera in cameras
-      span.span6
+      .col-lg-6
         .well
-          p= camera.name
-          img.image(src='/video/' + camera.name)
-          .div-1
+          p.text-center= camera.name
+          img.camera.img-rounded(src='/video/' + camera.name)
+          .btn-toolbar
             .btn-group
-              button.btn(data-action="move" data-camera= camera.name data-direction="left")
-                i.icon.icon-chevron-left
-              button.btn(data-action="move" data-camera= camera.name data-direction="right")
-                i.icon.icon-chevron-right
-              button.btn(data-action="move" data-camera= camera.name data-direction="up")
-                i.icon.icon-chevron-up
-              button.btn(data-action="move" data-camera= camera.name data-direction="down")
-                i.icon.icon-chevron-down
+              button.btn.btn-default(data-action="move" data-camera= camera.name data-direction="left")
+                i.fa.fa-chevron-left
+              button.btn.btn-default(data-action="move" data-camera= camera.name data-direction="right")
+                i.fa.fa-chevron-right
+              button.btn.btn-default(data-action="move" data-camera= camera.name data-direction="up")
+                i.fa.fa-chevron-up
+              button.btn.btn-default(data-action="move" data-camera= camera.name data-direction="down")
+                i.fa.fa-chevron-down
             .btn-group.pull-right
               each preset in camera.presets
-                button.btn(data-action="preset" data-camera= camera.name data-preset= preset.key)= preset.name
+                button.btn.btn-default(data-action="preset" data-camera= camera.name data-preset= preset.key)= preset.name

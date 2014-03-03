@@ -2,22 +2,14 @@ doctype html
 html
   head
     title Palantir
-    meta(name='viewport', content='width=device-width')
 
     script(src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js")
-    script(src="/scripts/controls.js")
 
-    link(href='https://fonts.googleapis.com/css?family=Limelight|Flamenco|Federo|Yesteryear|Josefin Sans|Spinnaker|Sansita One|Handlee|Droid Sans|Oswald:400,300,700', media='screen', rel='stylesheet', type='text/css')
-    link(href='stylesheets/bootstrap.css', media='screen', rel='stylesheet', type='text/css')
-    link(href='stylesheets/bootstrap-responsive.css', media='screen', rel='stylesheet', type='text/css')
-    link(href='stylesheets/common.css', media='screen', rel='stylesheet', type='text/css')
-    link(href='stylesheets/fontawesome.css', media='screen', rel='stylesheet', type='text/css')
-    link(href='stylesheets/styles.css', media='screen', rel='stylesheet', type='text/css')
+    link(href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css", rel="stylesheet", type="text/css")
+    link(href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css", rel="stylesheet", type="text/css")
 
     style.
       body {
-        padding-top: 40px;
-        padding-bottom: 40px;
         background-color: #eee;
       }
       .form-signin {
@@ -50,13 +42,41 @@ html
         border-top-left-radius: 0;
         border-top-right-radius: 0;
       }
+      .camera {
+        width: 100%;
+        margin-bottom: 19px;
+      }
+    script.
+      $(function(){
+        $("[data-action=move")
+        .on("mousedown", function (event){
+          var $this = $(this);
+          send($this.data("camera"), $this.data("direction") + ":start");
+        })
+        .on("mouseup", function (event){
+          var $this = $(this);
+          send($this.data("camera"), $this.data("direction") + ":stop");
+        });
+
+        $("[data-action=preset").on("click", function (event){
+          var $this = $(this);
+          send($this.data("camera"), "preset:" + $this.data("preset"));
+        });
+
+        function send (camera, command) {
+          $.get("/command/" + camera + "/" + command);
+        }
+      });
   body
-    .navbar.navbar-fixed-top
-      .navbar-inner
-        a.brand(href="/") Palantir
+
+    .navbar.navbar-default.navbar-static-top(role='navigation')
+      .container
+        .navbar-header
+          a.navbar-brand(href='#') Palantir
         if user
-          ul.nav.pull-right
-            li
-              a(href="/logout") Logout
+          .navbar-collapse.collapse
+            ul.nav.navbar-nav.navbar-right
+              li
+                a(href="/logout") Logout
     .container
       block content
