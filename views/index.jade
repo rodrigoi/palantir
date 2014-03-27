@@ -20,3 +20,35 @@ block append content
             .btn-group.pull-right
               each preset in camera.presets
                 button.btn.btn-default(data-action="preset" data-camera= camera.name data-preset= preset.key)= preset.name
+  script.
+    $(function(){
+      $(document).idleTimer({
+        timeout: 5000, //10*60*1000
+        events: "DOMMouseScroll mousewheel mousedown touchstart touchmove MSPointerDown MSPointerMove"
+      });
+      $(document).on("idle.idleTimer", function (event, elem, obj) {
+        window.location = "/logout";
+      }); 
+      setInterval(function(){
+        $.get("/keep");
+      }, 2000)
+
+      $("[data-action=move")
+      .on("mousedown", function (event){
+        var $this = $(this);
+        send($this.data("camera"), $this.data("direction") + ":start");
+      })
+      .on("mouseup", function (event){
+        var $this = $(this);
+        send($this.data("camera"), $this.data("direction") + ":stop");
+      });
+
+      $("[data-action=preset").on("click", function (event){
+        var $this = $(this);
+        send($this.data("camera"), "preset:" + $this.data("preset"));
+      });
+
+      function send (camera, command) {
+        $.get("/command/" + camera + "/" + command);
+      }
+    });

@@ -4,6 +4,7 @@ html
     title Palantir
 
     script(src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js")
+    script(src="//cdnjs.cloudflare.com/ajax/libs/jquery-idletimer/1.0.0/idle-timer.min.js")
 
     link(href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css", rel="stylesheet", type="text/css")
     link(href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css", rel="stylesheet", type="text/css")
@@ -46,29 +47,7 @@ html
         width: 100%;
         margin-bottom: 19px;
       }
-    script.
-      $(function(){
-        $("[data-action=move")
-        .on("mousedown", function (event){
-          var $this = $(this);
-          send($this.data("camera"), $this.data("direction") + ":start");
-        })
-        .on("mouseup", function (event){
-          var $this = $(this);
-          send($this.data("camera"), $this.data("direction") + ":stop");
-        });
-
-        $("[data-action=preset").on("click", function (event){
-          var $this = $(this);
-          send($this.data("camera"), "preset:" + $this.data("preset"));
-        });
-
-        function send (camera, command) {
-          $.get("/command/" + camera + "/" + command);
-        }
-      });
   body
-
     .navbar.navbar-default.navbar-static-top(role='navigation')
       .container
         .navbar-header

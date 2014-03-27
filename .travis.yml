@@ -1,0 +1,10 @@
+language: node_js
+node_js:
+- '0.10'
+deploy:
+  provider: heroku
+  api_key:
+    secure: KVxUlF0cKUIMK5bO0YdUgUo8E0mswmB0FItjyRaivrmq3BPnFalZ8E6aEQvKNvPotz8rq4nhwqHv51BSbeDsHsQa3w3rtBE1DZ0KgnWw2V9GW4ymSZPBgW1hxEH2Dj1dUcg5wU8uuXoFHmwJWrweZmu1iBxqOF7Ck/7oPVNwJlE=
+  app: tranquil-basin-4660
+  on:
+    repo: rodrigoi/palantir

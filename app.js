@@ -117,7 +117,6 @@ app.configure(function() {
 
   app.use(express.logger("dev"));
   app.use(express.cookieParser());
-  app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(express.session({ secret: "keyboard cat" }));
 
@@ -207,6 +206,10 @@ app.get("/command/:camera/:command", ensureAuthenticated, function (req, res) {
     http.request(cameraAddress, function(response) {}).end();
   }
 
+  res.send(200);
+});
+
+app.get("/keep", ensureAuthenticated, function(req, res) {
   res.send(200);
 });
 
