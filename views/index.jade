@@ -23,7 +23,7 @@ block append content
   script.
     $(function(){
       $(document).idleTimer({
-        timeout: 5000, //10*60*1000
+        timeout: 10*60*1000,
         events: "DOMMouseScroll mousewheel mousedown touchstart touchmove MSPointerDown MSPointerMove"
       });
       $(document).on("idle.idleTimer", function (event, elem, obj) {
@@ -31,7 +31,7 @@ block append content
       }); 
       setInterval(function(){
         $.get("/keep");
-      }, 2000)
+      }, 5*60*1000)
 
       $("[data-action=move")
       .on("mousedown", function (event){
