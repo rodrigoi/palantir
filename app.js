@@ -166,7 +166,7 @@ app.get("/video/:name", ensureAuthenticated, function(req, res) {
     return camera.name.toLowerCase() === name.toLowerCase();
   }).pop();
 
-  var cameraAddress = "http://placekitten.com/640/480";
+  var cameraAddress = "/images/stand-by.jpg";
 
   if(camera && camera.address) {
     cameraAddress = camera.address + "/videostream.cgi?user=" + camera.users.visitor.name + "&pwd=" + camera.users.visitor.pwd;

@@ -33,6 +33,8 @@ block append content
         $.get("/keep");
       }, 5*60*1000)
 
+      $("img").one("error", function() { this.src = "/images/stand-by.jpg"; });
+
       $("[data-action=move")
       .on("mousedown", function (event){
         var $this = $(this);
