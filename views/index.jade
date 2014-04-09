@@ -35,14 +35,9 @@ block append content
 
       $("img").one("error", function() { this.src = "/images/stand-by.jpg"; });
 
-      $("[data-action=move")
-      .on("mousedown", function (event){
+      $("[data-action=move").on("click", function (event){
         var $this = $(this);
         send($this.data("camera"), $this.data("direction") + ":start");
-      })
-      .on("mouseup", function (event){
-        var $this = $(this);
-        send($this.data("camera"), $this.data("direction") + ":stop");
       });
 
       $("[data-action=preset").on("click", function (event){

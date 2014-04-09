@@ -6,6 +6,7 @@ var LocalStrategy = require("passport-local").Strategy;
 var mongodb = require("mongodb");
 var mongoose = require("mongoose");
 var bcrypt = require("bcrypt");
+var S = require("string");
 
 var rawCameras = require("./cameras.json");
 var cameras = rawCameras.map(function(camera){
@@ -194,18 +195,37 @@ commands["preset:6"]    ="41";
 commands["preset:7"]    ="43";
 commands["preset:8"]    ="45";
 
-app.get("/command/:camera/:command", ensureAuthenticated, function (req, res) {
-  var name = req.params.camera;
-
+function sendCommand(command, cameraName, callback) {
   var camera = cameras.filter(function(camera) {
-    return camera.name.toLowerCase() === name.toLowerCase();
+    return camera.name.toLowerCase() === cameraName.toLowerCase();
   }).pop();
 
-  var command = commands[req.params.command];
-  if(command && camera && camera.address) {
-    cameraAddress = camera.address + "/decoder_control.cgi?command=" + command + "&user=" + camera.users.operator.name + "&pwd=" + camera.users.operator.pwd;
-    http.request(cameraAddress, function(response) {}).end();
+  if(camera && camera.address) {
+    camera.address = "http://home.gandalfelgris.com.ar:8080"
+    var cameraAddress = camera.address + "/decoder_control.cgi?command=" + command + "&user=" + camera.users.operator.name + "&pwd=" + camera.users.operator.pwd;
+    http.request(cameraAddress, function(response){
+      if(response.statusCode === 200 && typeof(callback) === 'function') {
+        callback.apply(this);
+      }
+    }).end();
   }
+}
+
+app.get("/command/:camera/:command", ensureAuthenticated, function (req, res) {
+  var camera = req.params.camera;
+  var commandName = req.params.command;
+  var command = commands[commandName];
+
+  console.log("sending command %s to camera %s", commandName, camera);
+
+  sendCommand(command, camera, function(){
+    if(S(commandName).endsWith('start')){
+      command = commands[S(commandName).replace('start', 'stop')];
+      setTimeout(function() {
+        sendCommand(command, camera);
+      }, 500);
+    }
+  });
 
   res.send(200);
 });
