@@ -220,8 +220,11 @@ app.get("/command/:camera/:command", ensureAuthenticated, function (req, res) {
 
   sendCommand(command, camera, function(){
     if(S(commandName).endsWith('start')){
-      command = commands[S(commandName).replace('start', 'stop')];
+      commandName = S(commandName).replace('start', 'stop');
+      command = commands[commandName];
+
       setTimeout(function() {
+        console.log("sending command %s to camera %s", commandName, camera);
         sendCommand(command, camera);
       }, 500);
     }
