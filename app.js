@@ -201,7 +201,6 @@ function sendCommand(command, cameraName, callback) {
   }).pop();
 
   if(camera && camera.address) {
-    camera.address = "http://home.gandalfelgris.com.ar:8080"
     var cameraAddress = camera.address + "/decoder_control.cgi?command=" + command + "&user=" + camera.users.operator.name + "&pwd=" + camera.users.operator.pwd;
     http.request(cameraAddress, function(response){
       if(response.statusCode === 200 && typeof(callback) === 'function') {
