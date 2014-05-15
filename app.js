@@ -225,7 +225,7 @@ app.get("/command/:camera/:command", ensureAuthenticated, function (req, res) {
       setTimeout(function() {
         console.log("sending command %s to camera %s", commandName, camera);
         sendCommand(command, camera);
-      }, 1000);
+      }, 500);
     }
   });
 
