@@ -3,9 +3,9 @@
     "name": "Sauron",
     "config_key": "SAURON",
     "presets": [
-      { "name": "couch", "key": 1},
-      { "name": "kitchen", "key": 2},
-      { "name": "table", "key": 3},
+      { "name": "couch", "key": 3},
+      { "name": "kitchen", "key": 1},
+      { "name": "table", "key": 2},
       { "name": "window", "key": 4}
     ]
   },
