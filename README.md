@@ -1,5 +1,7 @@
-palantir
+palantir 
 ========
+
+[![Build Status](https://travis-ci.org/rodrigoi/palantir.svg?branch=master)](https://travis-ci.org/rodrigoi/palantir)
 
 node.js app to monitor and control foscam cameras. It works with FI8910w and has very basic controls. It supports presets.
 
@@ -33,6 +35,4 @@ The configuration is divided in two parts. cameras.json and a group of environme
 ![image](https://s3.amazonaws.com/rodrigoi/login.png)
 ![image](https://s3.amazonaws.com/rodrigoi/main.png)
 ![image](https://s3.amazonaws.com/rodrigoi/responsive.png)
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/rodrigoi/palantir/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
