@@ -15,7 +15,8 @@
     "presets": [
       { "name": "window", "key": 2},
       { "name": "center", "key": 3},
-      { "name": "hallway", "key": 4}
+      { "name": "hallway", "key": 4},
+      { "name": "up", "key": 1}
     ]
   }
 ]
