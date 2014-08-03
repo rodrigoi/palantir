@@ -92,7 +92,7 @@ passport.deserializeUser(function(id, done) {
 });
 
 passport.use(new LocalStrategy(function(username, password, done) {
-  User.findOne({ username: username }, function(error, user) {
+  User.findOne({ username: username, active: true }, function(error, user) {
     if (error) {
       return done(error);
     }
