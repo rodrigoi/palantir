@@ -112,22 +112,20 @@ passport.use(new LocalStrategy(function(username, password, done) {
 
 var app = express();
 
-app.configure(function() {
-  app.set("views", __dirname + "/views");
-  app.set("view engine", "jade");
+app.set("views", __dirname + "/views");
+app.set("view engine", "jade");
 
-  app.use(express.logger("dev"));
-  app.use(express.cookieParser());
-  app.use(express.bodyParser());
-  app.use(express.methodOverride());
-  app.use(express.session({ secret: "keyboard cat" }));
+app.use(express.logger("dev"));
+app.use(express.cookieParser());
+app.use(express.bodyParser());
+app.use(express.methodOverride());
+app.use(express.session({ secret: "keyboard cat" }));
 
-  app.use(passport.initialize());
-  app.use(passport.session());
+app.use(passport.initialize());
+app.use(passport.session());
 
-  app.use(app.router);
-  app.use(express.static(__dirname + "/public"));
-});
+app.use(app.router);
+app.use(express.static(__dirname + "/public"));
 
 
 app.get("/", ensureAuthenticated, function(req, res){
