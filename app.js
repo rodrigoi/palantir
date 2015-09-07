@@ -1,6 +1,11 @@
 //var request = require("request");
-var http = require("http");
 var express = require("express");
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
+var session = require('express-session');
+
+var log4js = require('log4js');
+var http = require("http");
 var passport = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
 var mongodb = require("mongodb");
@@ -110,21 +115,24 @@ passport.use(new LocalStrategy(function(username, password, done) {
   });
 }));
 
+var logger = log4js.getLogger('console');
 var app = express();
 
 app.set("views", __dirname + "/views");
 app.set("view engine", "jade");
 
-app.use(express.logger("dev"));
-app.use(express.cookieParser());
-app.use(express.bodyParser());
-app.use(express.methodOverride());
-app.use(express.session({ secret: "keyboard cat" }));
+app.use(log4js.connectLogger(logger, { level: log4js.levels.INFO }));
+app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(session({
+  resave: false,
+  saveUninitialized: true,
+  secret: "keyboard cat"
+}));
 
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(app.router);
 app.use(express.static(__dirname + "/public"));
 
 
