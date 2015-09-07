@@ -75,9 +75,9 @@ var User = mongoose.model("User", userSchema);
 // });
 // user.save(function (error) {
 //   if(error) {
-//     console.log(error);
+//     logger.error(error);
 //   } else {
-//     console.log("user:" + user.username + " saved.");
+//     logger.debug("user:" + user.username + " saved.");
 //   }
 // });
 
@@ -221,7 +221,7 @@ app.get("/command/:camera/:command", ensureAuthenticated, function (req, res) {
   var commandName = req.params.command;
   var command = commands[commandName];
 
-  console.log("sending command %s to camera %s", commandName, camera);
+  logger.info("sending command %s to camera %s", commandName, camera);
 
   sendCommand(command, camera, function(){
     if(S(commandName).endsWith('start')){
@@ -229,7 +229,7 @@ app.get("/command/:camera/:command", ensureAuthenticated, function (req, res) {
       command = commands[commandName];
 
       setTimeout(function() {
-        console.log("sending command %s to camera %s", commandName, camera);
+        logger.info("sending command %s to camera %s", commandName, camera);
         sendCommand(command, camera);
       }, 500);
     }
