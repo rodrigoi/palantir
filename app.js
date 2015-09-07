@@ -33,7 +33,7 @@ mongoose.connect(process.env.MONGOLAB_URI || "mongodb://localhost/test");
 var db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", function (){
-  console.log("Connected to the DB");
+  logger.info("Connected to the DB");
 });
 
 var userSchema = mongoose.Schema({
@@ -235,15 +235,15 @@ app.get("/command/:camera/:command", ensureAuthenticated, function (req, res) {
     }
   });
 
-  res.send(200);
+  res.sendStatus(200);
 });
 
 app.get("/keep", ensureAuthenticated, function(req, res) {
-  res.send(200);
+  res.sendStatus(200);
 });
 
 var port = process.env.PORT || 3000;
 
 app.listen(port, function() {
-  console.log("Express server listening on port " + port);
+  logger.info("Express server listening on port " + port);
 });
