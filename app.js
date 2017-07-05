@@ -5,7 +5,7 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 
 var log4js = require('log4js');
-var http = require("http");
+var https = require("https");
 var passport = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
 var mongodb = require("mongodb");
@@ -208,7 +208,7 @@ function sendCommand(command, cameraName, callback) {
 
   if(camera && camera.address) {
     var cameraAddress = camera.address + "/decoder_control.cgi?command=" + command + "&user=" + camera.users.operator.name + "&pwd=" + camera.users.operator.pwd;
-    http.request(cameraAddress, function(response){
+    https.request(cameraAddress, function(response){
       if(response.statusCode === 200 && typeof(callback) === 'function') {
         callback.apply(this);
       }
